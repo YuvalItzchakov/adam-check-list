@@ -1,7 +1,7 @@
 import sttp.client3.httpclient.zio.SttpClient
-import zio.{ Has, RIO, Task, ZLayer }
 import zio.blocking.Blocking
 import zio.clock.Clock
+import zio.{Has, RIO, Task}
 
 import java.time.Duration
 import scala.annotation.nowarn
