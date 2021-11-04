@@ -1,5 +1,5 @@
 import sttp.client3.httpclient.zio.SttpClient
-import zio.{Has, RIO, Task, ZLayer}
+import zio.{ Has, RIO, Task, ZLayer }
 import zio.blocking.Blocking
 import zio.clock.Clock
 
@@ -36,8 +36,8 @@ class DataflowCheck(blocking: Blocking.Service, clock: Clock.Service) extends Ch
 
 class FlowdataCheck(blocking: Blocking.Service, configurationManager: ConfigurationManager) extends Check {
   override def check: Task[HealthCheckResult] =
-    configurationManager.fetchStuff.provide(Has(blocking)).map {
-      res => HealthCheckResult(Status.Success(res))
+    configurationManager.fetchStuff.provide(Has(blocking)).map { res =>
+      HealthCheckResult(Status.Success(res))
     }
 }
 

@@ -12,14 +12,16 @@ object Main extends App {
   override def run(args: List[String]): URIO[zio.ZEnv, ExitCode] =
     (for {
       (blocking, clock) <- ZIO.services[Blocking.Service, Clock.Service]
-      sttpClient <- ZIO.service[SttpClient.Service]
+      sttpClient        <- ZIO.service[SttpClient.Service]
       dataflowCheck = new DataflowCheck(blocking, clock)
       flowDataCheck = new FlowdataCheck(blocking, ConfigurationManagerLive(sttpClient))
       _ <- CheckExecutor.runChecks(List(dataflowCheck, flowDataCheck))
-    } yield ()).provideCustomLayer(AsyncHttpClientZioBackend
-      .layer(options = new SttpBackendOptions(connectionTimeout = 30.seconds, proxy = None))
-      .orDie
-    ).exitCode
+    } yield ())
+      .provideCustomLayer(
+        AsyncHttpClientZioBackend
+          .layer(options = new SttpBackendOptions(connectionTimeout = 30.seconds, proxy = None))
+          .orDie
+      )
+      .exitCode
 
 }
-
